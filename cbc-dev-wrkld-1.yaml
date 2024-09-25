@@ -1,0 +1,152 @@
+apiVersion: csi.tanzu.vmware.com/v1alpha1
+kind: VSphereCSIConfig
+metadata:
+  name: dev-wrkld-1
+  namespace: default
+spec:
+  vsphereCSI:
+    config:
+      datacenter: /M-DJDLAB
+      httpProxy: ""
+      httpsProxy: ""
+      insecureFlag: false
+      noProxy: ""
+      region: null
+      tlsThumbprint: 5D:42:85:64:05:3D:34:7F:CD:BA:C6:A9:D3:0F:A7:E3:FC:A5:C3:81
+      useTopologyCategories: false
+      zone: null
+    mode: vsphereCSI
+---
+apiVersion: run.tanzu.vmware.com/v1alpha3
+kind: ClusterBootstrap
+metadata:
+  annotations:
+    tkg.tanzu.vmware.com/add-missing-fields-from-tkr: v1.28.7---vmware.1-tkg.3
+  name: dev-wrkld-1
+  namespace: default
+spec:
+  additionalPackages:
+  - refName: metrics-server*
+  - refName: secretgen-controller*
+  - refName: pinniped*
+  csi:
+    refName: vsphere-csi*
+    valuesFrom:
+      providerRef:
+        apiGroup: csi.tanzu.vmware.com
+        kind: VSphereCSIConfig
+        name: dev-wrkld-1
+  kapp:
+    refName: kapp-controller*
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dev-wrkld-1
+  namespace: default
+stringData:
+  password: Mbb3pvuh!
+  username: administrator@vsphere.local
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  annotations:
+    osInfo: photon,5,amd64
+    tkg/plan: dev
+  labels:
+    tkg.tanzu.vmware.com/cluster-name: dev-wrkld-1
+  name: dev-wrkld-1
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 100.96.0.0/11
+    services:
+      cidrBlocks:
+      - 100.64.0.0/13
+  topology:
+    class: tkg-vsphere-default-v1.2.0
+    controlPlane:
+      metadata:
+        annotations:
+          run.tanzu.vmware.com/resolve-os-image: image-type=ova,os-name=photon
+      replicas: 1
+    variables:
+    - name: cni
+      value: antrea
+    - name: controlPlaneCertificateRotation
+      value:
+        activate: true
+        daysBefore: 90
+    - name: imageRepository
+      value:
+        tlsCertificateValidation: false
+    - name: auditLogging
+      value:
+        enabled: true
+    - name: podSecurityStandard
+      value:
+        audit: restricted
+        deactivated: true
+        warn: restricted
+    - name: apiServerEndpoint
+      value: ""
+    - name: aviAPIServerHAProvider
+      value: true
+    - name: vcenter
+      value:
+        cloneMode: fullClone
+        datacenter: /M-DJDLAB
+        datastore: /M-DJDLAB/datastore/VMware-SATA
+        folder: /M-DJDLAB/vm/TKG
+        network: /M-DJDLAB/network/M-DPG-TKG-Node
+        resourcePool: /M-DJDLAB/host/MGMT/Resources
+        server: m-vcsa8.djdlab.net
+        storagePolicyID: ""
+        tlsThumbprint: 5D:42:85:64:05:3D:34:7F:CD:BA:C6:A9:D3:0F:A7:E3:FC:A5:C3:81
+    - name: user
+      value:
+        sshAuthorizedKeys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC+71e9652wE101dzgonQOgeSlvD0N0RtgltXt0lhxIacmR4cUbke5Hzs7upDRWYzjpxLSATVeWVg8NjANmCZ+bZ8iz+yTZk6G+B2yc5CYtsjOT7oipuDbe/gSx/frCZIpd7wFrrpwIwf506uu4bC09db6+qxFR/RogOrIgav9W+hbl9PjF7zfSyBFgRJtDHeNURxhXzFiSStBo591xIXSpZ55ryh5Yz6zgwIKf6116JakLtOX+k6qfMVscmzMInZ3dfgvhZ/74+YyccDireKuak4Wusb4kcRjnGhlrA5jn4PtBdAavYrFvZ+E0aEYGFmLoDDrA0rfsFxlitqMgTAsBjmpjB/Yp2YKuZ6kqsFNbsScEwnTPWvidpbn2HfPi8VK7YPVwoTDJMB8SU3HJZHmsn0yfR1P+2HhrtfFFyyCqXI8nT0dQzadyJlF4Js+ojHaDcau4h5xQ6PcI5IcfFQxGW64pPkmAvlO2GCjY1L5qoVhcyvyVBWhWorvTT+xRo18=
+    - name: controlPlane
+      value:
+        machine:
+          diskGiB: 20
+          memoryMiB: 4096
+          numCPUs: 2
+          numCoresPerSocket: 0
+    - name: worker
+      value:
+        machine:
+          diskGiB: 80
+          memoryMiB: 32768
+          numCPUs: 8
+          numCoresPerSocket: 0
+    - name: security
+      value:
+        fileIntegrityMonitoring:
+          enabled: false
+        imagePolicy:
+          pullAlways: false
+          webhook:
+            enabled: false
+            spec:
+              allowTTL: 50
+              defaultAllow: true
+              denyTTL: 60
+              retryBackoff: 500
+        kubeletOptions:
+          eventQPS: 50
+          streamConnectionIdleTimeout: 4h0m0s
+        systemCryptoPolicy: default
+    version: v1.28.7+vmware.1-tkg.3
+    workers:
+      machineDeployments:
+      - class: tkg-worker
+        metadata:
+          annotations:
+            run.tanzu.vmware.com/resolve-os-image: image-type=ova,os-name=photon
+        name: md-0
+        replicas: 1

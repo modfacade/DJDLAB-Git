@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordpress-path
+  namespace: wordpress
+  annotations:
+    ako.vmware.com/enable-tls: "true"
+  labels:
+    app: wordpress-path
+spec:
+  ingressClassName: avi-lb
+  rules:
+  - host: "wordpress.avilb.kmdproperties.com"
+    http:
+      paths:
+        - path: /var/www/html/wp-content
+          backend:
+           service:
+            name: wordpress-service
+            port:
+              number: 80

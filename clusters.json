@@ -1,0 +1,20 @@
+[
+  {
+    "name": "dev-wrkld",
+    "namespace": "default",
+    "status": "running",
+    "plan": "dev",
+    "controlplane": "1/1",
+    "workers": "1/1",
+    "kubernetes": "v1.28.7+vmware.1",
+    "roles": [],
+    "tkr": "v1.28.7---vmware.1-tkg.3",
+    "labels": {
+      "cluster.x-k8s.io/cluster-name": "dev-wrkld",
+      "networking.tkg.tanzu.vmware.com/avi": "install-ako-for-all",
+      "run.tanzu.vmware.com/tkr": "v1.28.7---vmware.1-tkg.3",
+      "tkg.tanzu.vmware.com/cluster-name": "dev-wrkld",
+      "topology.cluster.x-k8s.io/owned": ""
+    }
+  }
+]

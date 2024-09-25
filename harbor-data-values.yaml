@@ -1,0 +1,148 @@
+cache:
+  enabled: true
+  expireHours: 24
+core:
+  replicas: 1
+  secret: Mbb3pvuh!Mbb3pvuh!
+  xsrfKey: Mbb3pvuh!Mbb3pvuh!
+database:
+#   external:
+#     coreDatabase: registry
+#     host:
+#     password:
+#     port: "5432"
+#     username: postgres
+  password: Mbb3pvuh!
+  type: internal
+enableContourHttpProxy: true
+harborAdminPassword:  Mbb3pvuh!
+hostname: harbor.djdlab.net
+jobservice:
+  replicas: 1
+  secret: Mbb3pvuh!
+logLevel: info
+metrics:
+  core:
+    path: /metrics
+    port: 8001
+  enabled: false
+  exporter:
+    path: /metrics
+    port: 8001
+  jobservice:
+    path: /metrics
+    port: 8001
+  registry:
+    path: /metrics
+    port: 8001
+namespace: tanzu-system-registry
+# network:
+#   ipFamilies: []
+persistence:
+#   imageChartStorage:
+#     azure:
+#       accountkey: base64encodedaccountkey
+#       accountname: accountname
+#       container: containername
+#       realm: core.windows.net
+#     disableredirect: false
+#     filesystem:
+#       rootdirectory: /storage
+#     gcs:
+#       bucket: bucketname
+#       chunksize: 5242880
+#       encodedkey: base64-encoded-json-key-file
+#     oss:
+#       accesskeyid: accesskeyid
+#       accesskeysecret: accesskeysecret
+#       bucket: bucketname
+#       region: regionname
+#     s3:
+#       bucket: bucketname
+#       encrypt: false
+#       region: us-west-1
+#       secure: true
+#       skipverify: false
+#       storageclass: STANDARD
+#       v4auth: true
+#     swift:
+#       authurl: https://storage.myprovider.com/v3/auth
+#       container: containername
+#       password: password
+#       username: username
+#     type: filesystem
+  persistentVolumeClaim:
+    database:
+      accessMode: ReadWriteOnce
+      existingClaim: ""
+      size: 10Gi
+      storageClass: ""
+      subPath: ""
+    jobservice:
+      jobLog:
+        accessMode: ReadWriteOnce
+        existingClaim: ""
+        size: 1Gi
+        storageClass: ""
+        subPath: ""
+#     redis:
+#       accessMode: ReadWriteOnce
+#       existingClaim: ""
+#       size: 1Gi
+#       storageClass: ""
+#       subPath: ""
+    registry:
+      accessMode: ReadWriteOnce
+      existingClaim: ""
+      size: 10Gi
+      storageClass: ""
+      subPath: ""
+    trivy:
+      accessMode: ReadWriteOnce
+      existingClaim: ""
+      size: 5Gi
+      storageClass: ""
+      subPath: ""
+port:
+  https: 443
+# proxy:
+#   httpProxy: ""
+#   httpsProxy: ""
+#   noProxy: 127.0.0.1,localhost,.local,.internal
+# pspNames: "null"
+# redis:
+#   external:
+#     addr:
+#     coreDatabaseIndex: 0
+#     jobserviceDatabaseIndex: 1
+#     password:
+#     registryDatabaseIndex: 2
+#     trivyAdapterIndex: 5
+#   type: internal
+registry:
+  replicas: 1
+  secret: Mbb3pvuh!Mbb3pvuh!
+secretKey: Mbb3pvuh!Mbb3pvuh!
+# tlsCertificate:
+#   ca.crt:
+#   tls.crt:
+#   tls.key:
+# trace:
+#   enabled: false
+#   jaeger:
+#     endpoint: http://hostname:14268/api/traces
+#   otel:
+#     compression: false
+#     endpoint: hostname:4318
+#     insecure: true
+#     timeout: 10
+#     url_path: /v1/traces
+#   provider: jaeger
+#   sample_rate: 1
+trivy:
+  enabled: true
+  gitHubToken: ""
+  offlineScan: false
+  replicas: 1
+  skipUpdate: false
+  timeout: ""

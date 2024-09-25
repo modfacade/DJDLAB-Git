@@ -1,0 +1,66 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  creationTimestamp: "2024-08-27T14:50:26Z"
+  generation: 7
+  name: tkg-vsphere-default-v1.2.0-md-config
+  namespace: mgmt-packages
+  ownerReferences:
+  - apiVersion: cluster.x-k8s.io/v1beta1
+    kind: ClusterClass
+    name: tkg-vsphere-default-v1.2.0
+    uid: 37638ece-6176-4d1c-887d-b90f3f27c074
+  resourceVersion: "335801"
+  uid: 97ac4397-9e29-4e92-a859-33a2f2250d33
+spec:
+  template:
+    metadata: {}
+    spec:
+      files:
+      - content: |
+          -----BEGIN CERTIFICATE-----
+          MIIDKDCCAhCgAwIBAgIQOgA93Pk+iNAlBzaSau51KTANBgkqhkiG9w0BAQsFADAU
+          MRIwEAYDVQQDEwlIYXJib3IgQ0EwHhcNMjQwODI3MTk0NzUzWhcNMzQwODI1MTk0
+          NzUzWjAUMRIwEAYDVQQDEwlIYXJib3IgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+          DwAwggEKAoIBAQC4sdnB0R5O4Ejhzd+SQQZLz5nJZW+kRCFZ2IjI+MW7u5q5juMh
+          KwOjE3mmbULRBfBAj+WgJkU9BYJE0tLkeMIxCjZFyt3zRof/RsrWwLPe5uUCgh6y
+          TFkHy36uIITYDIsmgybYv/yr7oL+AOEe62kL8R2VqqU3p4Pt5fRcGs7ulgloSnna
+          ew134v8z/cOKmlJsrFbLZtSovJGxIRh+u40XnLai629IhyiGZGMAFfdYnWwyjmKU
+          Qyj5qDs28UUURuwhHOpcYgrwIeNhwveEdR3xyzwbQyZhUahttGQYKkT/o0AfXIQf
+          +yEOyCaOGYBkT+huhuJb/ddflql1dyvML/6ZAgMBAAGjdjB0MA4GA1UdDwEB/wQE
+          AwICBDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUw
+          AwEB/zAdBgNVHQ4EFgQURXlIo+PotSxhlwID4uAlQmBYiiYwEwYDVR0RBAwwCoII
+          aGFyYm9yY2EwDQYJKoZIhvcNAQELBQADggEBAIhdVYOE02e5oQd3aWZafZJdrVxD
+          OQAKW8uFEgVTf7395pqRf5Hdt2Xony4cO2SmJSEuMbg0AOn96AyZ0m9HD1bbHpJk
+          gzmBcLU/8rFgBVr8axnHGRNgjBji3y0ag1lTiAaXaFTUyXzn4jeW4f/JYp1Bj1w3
+          u8jVgnyYSEyf2LXon5PJRzvwKT9YCdOpnVq48ooXWfJDhgPd3wyz0CnrQULyFeLw
+          g1954jPjNVBHd/E1YoFvKFosJtBu84aM5s+uEZhTZFv8p90APgBTFK97AWoeHokV
+          zqVCx/uIKQcRfycsk68f05wozeXa7g/vUZYTGvdiSkDFWYtE3ZV8rySHwDM=
+          -----END CERTIFICATE-----
+        owner: root:root
+        path: /tmp/empty.txt
+        permissions: "0600"
+      format: cloud-config
+      joinConfiguration:
+        discovery: {}
+        nodeRegistration:
+          criSocket: /var/run/containerd/containerd.sock
+          imagePullPolicy: IfNotPresent
+          name: '{{ ds.meta_data.hostname }}'
+      postKubeadmCommands:
+      - echo "running postKubeadmCommands..."
+      preKubeadmCommands:
+      - hostname "{{ ds.meta_data.hostname }}"
+      - echo "::1         ipv6-localhost ipv6-loopback" >/etc/hosts
+      - echo "127.0.0.1   localhost" >>/etc/hosts
+      - echo "127.0.0.1   {{ ds.meta_data.hostname }}" >>/etc/hosts
+      - echo "{{ ds.meta_data.hostname }}" >/etc/hostname
+      users:
+      - name: capv
+        sshAuthorizedKeys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC+71e9652wE101dzgonQOgeSlvD0N0RtgltXt0lhxIacmR4cUbke5Hzs7upDRWYzjpxLSATVeWVg8NjANmCZ+bZ8iz+yTZk6G+B2yc5CYtsjOT7oipuDbe/gSx/frCZIpd7wFrrpwIwf506uu4bC09db6+qxFR/RogOrIgav9W+hbl9PjF7zfSyBFgRJtDHeNURxhXzFiSStBo591xIXSpZ55ryh5Yz6zgwIKf6116JakLtOX+k6qfMVscmzMInZ3dfgvhZ/74+YyccDireKuak4Wusb4kcRjnGhlrA5jn4PtBdAavYrFvZ+E0aEYGFmLoDDrA0rfsFxlitqMgTAsBjmpjB/Yp2YKuZ6kqsFNbsScEwnTPWvidpbn2HfPi8VK7YPVwoTDJMB8SU3HJZHmsn0yfR1P+2HhrtfFFyyCqXI8nT0dQzadyJlF4Js+ojHaDcau4h5xQ6PcI5IcfFQxGW64pPkmAvlO2GCjY1L5qoVhcyvyVBWhWorvTT+xRo18=
+        sudo: ALL=(ALL) NOPASSWD:ALL

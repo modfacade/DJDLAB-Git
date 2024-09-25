@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-a-deployment
+  namespace: web
+spec:
+  selector:
+    matchLabels:
+      app: web-a
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web-a
+    spec: 
+      containers:
+      - name: web-a
+        image: harbor.djdlab.net/djdlab/ingress-demo-a
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-a
+  labels:
+    app: web-a
+spec:
+  selector:
+    app: web-a
+  ports:
+  - port: 80
+    protocol: TCP
+  sessionAffinity: None
+  type: ClusterIP
+

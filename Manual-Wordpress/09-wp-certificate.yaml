@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: www-kmdproperties-com
+  namespace: wordpress
+spec:
+  secretName: $ummert!mEbr3eze
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - www.kmdproperties.com

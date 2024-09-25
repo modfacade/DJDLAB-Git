@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: LoadBalancer
+metadata:
+  name: wordpress-ingress-secure
+  namespace: wordpress
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`wordpress.djdlab.net`)
+      kind: Rule
+      services:
+        - name: wordpress-service
+          namespace: wordpress
+          port: 80
+  tls:
+    secretName: wordpress-djdlab-tls

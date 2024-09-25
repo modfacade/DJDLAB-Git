@@ -1,0 +1,18 @@
+certificates:
+  caDuration: 8760h
+  caRenewBefore: 720h
+  leafDuration: 720h
+  leafRenewBefore: 360h
+contour:
+  logLevel: info
+  pspNames: vmware-system-restricted
+  replicas: 2
+  useProxyProtocol: false
+envoy:
+  logLevel: info
+  service:
+    type: LoadBalancer
+  workload:
+    replicas: 2
+infrastructure_provider: vsphere
+namespace: tanzu-system-ingress
