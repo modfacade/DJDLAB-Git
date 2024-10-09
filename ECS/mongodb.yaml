@@ -38,7 +38,9 @@ spec:
             secretKeyRef:
               name: mongodb-secret
               key: mongo-root-password
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -47,6 +49,7 @@ metadata:
 spec:
   selector:
     app: mongodb
+  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 27017
