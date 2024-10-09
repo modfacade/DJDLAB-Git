@@ -46,11 +46,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-service
+  name: mongodb-express-service
 spec:
   selector:
-    app: mongodb
-  type: LoadBalancer
+    app: mongodb-express
+  type: NodePort
   ports:
   - protocol: TCP
     port: 8081
